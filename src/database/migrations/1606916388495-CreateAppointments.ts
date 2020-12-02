@@ -28,5 +28,7 @@ export default class CreateAppointments1606916388495
     );
   }
 
-  public async down(queryRunner: QueryRunner): Promise<void> {}
+  public async down(queryRunner: QueryRunner): Promise<void> {
+    await queryRunner.dropTable('appointments');
+  }
 }
