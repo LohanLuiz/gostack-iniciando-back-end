@@ -11,7 +11,7 @@ interface Request {
 }
 
 class UpdateUserAvatarService {
-  public async execute({ user_id, avatarFilename }: Request): Promise<void> {
+  public async execute({ user_id, avatarFilename }: Request): Promise<User> {
     const usersRepository = getRepository(User);
 
     const user = await usersRepository.findOne(user_id);
@@ -28,6 +28,12 @@ class UpdateUserAvatarService {
         await fs.promises.unlink(userAvatarFilePath);
       }
     }
+
+    user.avatar = avatarFilename;
+
+    await usersRepository.save(user);
+
+    return user;
   }
 }
 
