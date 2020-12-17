@@ -21,8 +21,10 @@ class UpdateUserAvatarService {
     }
 
     if (user.avatar) {
-      const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar);
-      const userAvatarFileExists = await fs.promises.stat(userAvatarFilePath);
+      // Deletar avatar anterior
+
+      const userAvatarFilePath = path.join(uploadConfig.directory, user.avatar); // <- Busca o avatar no database
+      const userAvatarFileExists = await fs.promises.stat(userAvatarFilePath); // <- Checar se realmente existe
 
       if (userAvatarFileExists) {
         await fs.promises.unlink(userAvatarFilePath);
