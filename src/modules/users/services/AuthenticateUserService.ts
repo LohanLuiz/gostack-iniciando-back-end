@@ -25,7 +25,7 @@ export default class AuthenticateUserService {
     private usersRepository: IUsersRepository,
   ) {}
 
-  public async execute({ email, password }: IRequest): Promise<Response> {
+  public async execute({ email, password }: IRequest): Promise<IResponse> {
     const user = await this.usersRepository.findByEmail(email);
 
     if (!user) {
