@@ -15,16 +15,19 @@ describe('AuthenticateUser', () => {
       fakeHashProvider,
     );
 
-    const authenticateUser = new AuthenticateUserService(fakeUsersRepository);
+    const authenticateUser = new AuthenticateUserService(
+      fakeUsersRepository,
+      fakeHashProvider,
+    );
 
     await createUser.execute({
       name: 'John Doe',
-      email: 'Johndoe@example.com',
+      email: 'johndoe@example.com',
       password: '123456',
     });
 
     const response = await authenticateUser.execute({
-      email: 'Johndoe@example.com',
+      email: 'johndoe@example.com',
       password: '123456',
     });
 
