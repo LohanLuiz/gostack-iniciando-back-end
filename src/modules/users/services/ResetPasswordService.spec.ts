@@ -9,7 +9,6 @@ import ResetPasswordService from './ResetPasswordService';
 let fakeUsersRepository: FakeUsersRepository;
 let fakeUserTokensRepository: FakeUserTokensRepository;
 let fakeHashProvider: FakeHashProvider;
-
 let resetPassword: ResetPasswordService;
 
 describe('ResetPasswordService', () => {
