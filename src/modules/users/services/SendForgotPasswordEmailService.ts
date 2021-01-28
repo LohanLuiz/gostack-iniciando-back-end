@@ -1,19 +1,31 @@
 import { injectable, inject } from 'tsyringe';
 
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 // import AppError from '@shared/errors/AppError';
-// import User from '@modules/users/infra/typeorm/entities/User';
+
+// import User from '../infra/typeorm/entities/User';
+import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
+import IUsersRepository from '../repositories/IUsersRepository';
 
 interface IRequest {
   email: string;
 }
 
 @injectable()
-export default class SendForgotPasswordEmailService {
+class SendForgotPasswordEmailService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
+    @inject('MailProvider')
+    private mailProvider: IMailProvider,
   ) {}
 
-  public async execute(): Promise<void> {}
+  public async execute({ email }: IRequest): Promise<void> {
+    await this.mailProvider.sendMail(
+      email,
+      'Pedido de recuperação de senha recebido',
+    );
+  }
 }
+
+export default SendForgotPasswordEmailService;
