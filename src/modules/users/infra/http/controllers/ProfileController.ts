@@ -39,7 +39,6 @@ export default class ProfileController {
       password,
     });
 
-    // Com a atualização do TypeScript, isso se faz necessário
     const userWithoutPassword = {
       id: user.id,
       name: user.name,
