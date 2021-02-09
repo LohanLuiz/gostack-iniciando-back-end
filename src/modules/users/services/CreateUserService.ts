@@ -1,8 +1,10 @@
 import { injectable, inject } from 'tsyringe';
 
-import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 import AppError from '@shared/errors/AppError';
-import User from '@modules/users/infra/typeorm/entities/User';
+
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+import User from '../infra/typeorm/entities/User';
+import IUsersRepository from '../repositories/IUsersRepository';
 import IHashProvider from '../providers/HashProvider/models/IHashProvider';
 
 interface IRequest {
@@ -12,19 +14,22 @@ interface IRequest {
 }
 
 @injectable()
-export default class CreateUserService {
+class CreateUserService {
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
     @inject('HashProvider')
     private hashProvider: IHashProvider,
+
+    @inject('CacheProvider')
+    private cacheProvider: ICacheProvider,
   ) {}
 
   public async execute({ name, email, password }: IRequest): Promise<User> {
-    const checkUsersExists = await this.usersRepository.findByEmail(email);
+    const checkUserExists = await this.usersRepository.findByEmail(email);
 
-    if (checkUsersExists) {
+    if (checkUserExists) {
       throw new AppError('Email address already used.');
     }
 
@@ -36,6 +41,10 @@ export default class CreateUserService {
       password: hashedPassword,
     });
 
+    await this.cacheProvider.invalidatePrefix('providers-list');
+
     return user;
   }
 }
+
+export default CreateUserService;
