@@ -30,7 +30,6 @@ export default class SESMailProvider implements IMailProvider {
     subject,
     templateData,
   }: ISendMailDTO): Promise<void> {
-    console.log('chegou');
     const { name, email } = mailConfig.defaults.from;
 
     await this.client.sendMail({
